@@ -1,0 +1,10 @@
+{% extends 'vacancies/base.html' %}
+{% load crispy_forms_tags %}
+{% crispy form form.helper %}
+
+{% block content %}
+  <main class="container mt-3 pb-5">
+    {% crispy form %}
+    <div class="mt-4 text-center"><p>Есть аккаунт? <a href="{% url 'login' %}">Войдите!</a></p></div>
+  </main>
+{% endblock %}

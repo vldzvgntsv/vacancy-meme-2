@@ -1,0 +1,32 @@
+{% extends 'vacancies/base.html' %}
+{% load humanize %}
+{% load to_circle %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <main class="container mt-3 pb-5">
+    <div class="row mt-5">
+      <div class="col-12 col-lg-2">
+        <div class="pl-3 mb-5">
+          <p><a href="{{ request.META.HTTP_REFERER }}">Назад</a></p>
+        </div>
+      </div>
+      <div class="col-12 col-lg-8">
+        <section class="pl-3">
+          {% if object.company.logo %}
+          <a href="{% url 'company-card' id=object.company.id %}"><img src="{{ object.company.logo.url }}" width="130" height="80" alt=""></a>
+          {% endif %}
+          <div class="d-flex align-items-baseline align-content-baseline">
+            <h1 class="h2 mt-4 font-weight-bold" >{{ object.title }}</h1>
+            <p class="m-0 pl-3">{{ object.salary_min|intcomma }} – {{ object.salary_max|intcomma }} руб.</p>
+          </div>
+          <p class="mt-2">{{ object.skills|to_circle:"," }}</p>
+          <p class="text-muted mb-4">{{ object.company.name }} ({{ object.company.employee_count }} человек), {{ object.company.location }}</p>
+          <div style="line-height: 1.8;">
+            {{ object.description|safe }}
+          </div>
+          {% crispy form %}
+        </section>
+      </div>
+    </div>
+  </main>
+{% endblock %}

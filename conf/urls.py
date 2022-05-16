@@ -20,8 +20,12 @@ from django.urls import path
 
 from accounts.views import MySignupView, MyLoginView
 from conf import settings
-from vacancies.views import CompanyCardView, HomePageView, ListVacanciesView, SingleVacancyView, VacanciesCatView, \
-    SendView, MyCompanyEdit, MyCompanyCreate, MyCompanyStart
+from vacancies.views.my_company import MyCompanyStart, MyCompanyCreate, MyCompanyEdit
+from vacancies.views.my_vacancies import MyVacanciesList, MyVacancyEdit, MyVacancyCreate
+from vacancies.views.public import (
+    HomePageView, ListVacanciesView, VacanciesCatView, CompanyCardView,
+    SingleVacancyView, SendView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,6 +38,9 @@ urlpatterns = [
     path('mycompany/letsstart/', MyCompanyStart.as_view(), name='my-company-start'),
     path('mycompany/create/', MyCompanyCreate.as_view(), name='my-company-create'),
     path('mycompany/', MyCompanyEdit.as_view(), name='my-company-edit'),
+    path('mycompany/vacancies/', MyVacanciesList.as_view(), name='my-vacancies-list'),
+    path('mycompany/vacancies/create/', MyVacancyCreate.as_view(), name='my-vacancy-create'),
+    path('mycompany/vacancies/<int:id>/', MyVacancyEdit.as_view(), name='my-vacancy-edit'),
     path('register/', MySignupView.as_view(), name='register'),
     path('login/', MyLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),

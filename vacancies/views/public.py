@@ -1,11 +1,9 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import redirect, render
-from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 
-from vacancies.forms import ApplicationForm, CompanyForm
+from vacancies.forms import ApplicationForm
 from vacancies.models import Company, Specialty, Vacancy
 
 
@@ -82,14 +80,13 @@ class SingleVacancyView(DetailView):
 
     def post(self, request, **kwargs):
         application_form = ApplicationForm(request.POST)
+        if not request.user.is_authenticated:
+            return redirect('login')
         if application_form.is_valid():
             application_form.instance.vacancy = Vacancy.objects.get(id=self.kwargs['pk'])
             application_form.instance.user = request.user
             application_form.save()
-            print('GOOD')
-            return redirect(request.path+'send')
-        else:
-            print('BAD')
+            return redirect(request.path + 'send')
         return render(request, 'vacancies/form.html', context={'form': application_form})
 
     def get_context_data(self, **kwargs):
@@ -106,70 +103,3 @@ class SendView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['head_title'] = 'Отклик отправлен'
         return context
-
-
-class MyCompanyStart(TemplateView):
-
-    template_name = 'vacancies/company-start.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['head_title'] = 'Создание компании'
-        return context
-
-
-class MyCompanyCreate(View):
-
-    def post(self, request, **kwargs):
-        company_form = CompanyForm(request.POST)
-        if company_form.is_valid():
-            company_form.instance.owner = request.user
-            company_form.save()
-            print('GOOD')
-            return redirect('/')
-        else:
-            print('BAD')
-        context = {
-            'head_title': 'Моя компания',
-            'form': CompanyForm(instance=company_form)
-        }
-        return render(request, 'vacancies/company-edit.html', context=context)
-
-    def get(self, request, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('login')
-        context = {
-            'head_title': 'Моя компания',
-            'form': CompanyForm()
-        }
-        return render(request, 'vacancies/company-edit.html', context=context)
-
-
-class MyCompanyEdit(View):
-
-    def post(self, request, **kwargs):
-        company_form = CompanyForm(request.POST, instance=request.user.company)
-        if company_form.is_valid():
-            company_form.save()
-            print('GOOD')
-            return redirect('/')
-        else:
-            print('BAD')
-        context = {
-            'head_title': 'Моя компания',
-            'form': CompanyForm(instance=company_form)
-        }
-        return render(request, 'vacancies/company-edit.html', context=context)
-
-    def get(self, request, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('login')
-        try:
-            company = request.user.company
-        except ObjectDoesNotExist:
-            return redirect('my-company-start')
-        context = {
-            'head_title': 'Моя компания',
-            'form': CompanyForm(instance=company)
-        }
-        return render(request, 'vacancies/company-edit.html', context=context)

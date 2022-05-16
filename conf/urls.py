@@ -24,7 +24,7 @@ from vacancies.views.my_company import MyCompanyStart, MyCompanyCreate, MyCompan
 from vacancies.views.my_vacancies import MyVacanciesList, MyVacancyEdit, MyVacancyCreate
 from vacancies.views.public import (
     HomePageView, ListVacanciesView, VacanciesCatView, CompanyCardView,
-    SingleVacancyView, SendView,
+    SingleVacancyView, SendView, SearchView,
 )
 
 urlpatterns = [
@@ -41,6 +41,7 @@ urlpatterns = [
     path('mycompany/vacancies/', MyVacanciesList.as_view(), name='my-vacancies-list'),
     path('mycompany/vacancies/create/', MyVacancyCreate.as_view(), name='my-vacancy-create'),
     path('mycompany/vacancies/<int:id>/', MyVacancyEdit.as_view(), name='my-vacancy-edit'),
+    path('search', SearchView.as_view(), name='search'),
     path('register/', MySignupView.as_view(), name='register'),
     path('login/', MyLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),

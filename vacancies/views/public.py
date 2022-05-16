@@ -1,6 +1,7 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import Http404
 from django.shortcuts import redirect, render
+from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 
 from vacancies.forms import ApplicationForm
@@ -103,3 +104,18 @@ class SendView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['head_title'] = 'Отклик отправлен'
         return context
+
+
+class SearchView(View):
+
+    def get(self, request, **kwargs):
+        query = request.GET.get('s')
+        vacancies = Vacancy.objects.filter(
+            Q(title__icontains=query) | Q(description__contains=query)
+        )
+        context = {
+            'head_title': 'Поиск вакансий',
+            'vacancies': vacancies,
+            'query': query,
+        }
+        return render(request, 'vacancies/search.html', context=context)

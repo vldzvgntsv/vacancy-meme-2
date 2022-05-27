@@ -21,7 +21,7 @@ class MyCompanyCreate(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def post(self, request, **kwargs):
-        company_form = CompanyForm(request.POST)
+        company_form = CompanyForm(request.POST, request.FILES)
         if company_form.is_valid():
             company_form.instance.owner = request.user
             company_form.save()
@@ -46,7 +46,7 @@ class MyCompanyEdit(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def post(self, request, **kwargs):
-        company_form = CompanyForm(request.POST, instance=request.user.company)
+        company_form = CompanyForm(request.POST, request.FILES, instance=request.user.company)
         if company_form.is_valid():
             company_form.save()
             return redirect('my-company-edit')

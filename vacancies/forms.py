@@ -19,7 +19,7 @@ class ApplicationForm(forms.ModelForm):
 class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ('name', 'location', 'description', 'employee_count')
+        fields = ('name', 'location', 'logo', 'description', 'employee_count')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

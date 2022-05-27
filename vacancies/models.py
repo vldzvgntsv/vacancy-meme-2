@@ -28,7 +28,7 @@ class Vacancy(models.Model):
     description = TextField()
     salary_min = IntegerField()
     salary_max = IntegerField()
-    published_at = DateField()
+    published_at = DateField(auto_now_add=True)
 
 
 class Application(models.Model):

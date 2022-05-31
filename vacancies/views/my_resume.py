@@ -46,9 +46,8 @@ class MyResumeEdit(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def post(self, request, **kwargs):
-        resume_form = ResumeForm(request.POST)
+        resume_form = ResumeForm(request.POST, instance=request.user.resume)
         if resume_form.is_valid():
-            resume_form.instance.owner = request.user
             resume_form.save()
             return redirect('my-resume-edit')
         context = {

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'vacancies',
     'accounts',
     'crispy_forms',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +133,15 @@ MEDIA_ROOT = 'media'
 
 MEDIA_COMPANY_IMAGE_DIR = 'company_images'
 MEDIA_SPECIALTY_IMAGE_DIR = 'specialty_images'
+
+AWS_ACCESS_KEY_ID = '216564_Vladis'
+AWS_SECRET_ACCESS_KEY = '&xa1t|g:rR'
+AWS_STORAGE_BUCKET_NAME = 'vacancies-bucket'
+AWS_LOCATION = 'media'
+AWS_S3_ENDPOINT_URL = 'https://s3.storage.selcloud.ru'
+AWS_S3_REGION_NAME = 'ru-1'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

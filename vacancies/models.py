@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import CharField, DateField, ForeignKey, IntegerField, TextField, OneToOneField, ImageField
+from django.db.models import (
+    CharField, DateField, ForeignKey, IntegerField, TextField,
+    OneToOneField, ImageField,
+)
 
 from conf.settings import MEDIA_COMPANY_IMAGE_DIR, MEDIA_SPECIALTY_IMAGE_DIR
 
@@ -11,7 +14,7 @@ class Company(models.Model):
     logo = ImageField(upload_to=MEDIA_COMPANY_IMAGE_DIR)
     description = TextField()
     employee_count = IntegerField()
-    owner = OneToOneField(User, related_name='company', on_delete=models.SET_NULL, null=True)
+    owner = OneToOneField(User, related_name='company', on_delete=models.CASCADE, null=True)
 
 
 class Specialty(models.Model):
@@ -37,3 +40,28 @@ class Application(models.Model):
     written_cover_letter = TextField()
     vacancy = ForeignKey(Vacancy, related_name="applications", on_delete=models.CASCADE, null=True)
     user = ForeignKey(User, related_name="applications", on_delete=models.CASCADE, null=True)
+
+
+class Resume(models.Model):
+    STATUS_CHOICES = [
+        ('N', 'Не ищу работу'),
+        ('L', 'Рассматриваю предложения'),
+        ('Y', 'Ищу работу')
+    ]
+    GRADE_CHOICES = [
+        ('INT', 'Стажер'),
+        ('JUN', 'Джуниор'),
+        ('MID', 'Миддл'),
+        ('SEN', 'Сеньор'),
+        ('LED', 'Лид'),
+    ]
+    user = OneToOneField(User, related_name='resume', on_delete=models.CASCADE, null=True)
+    name = CharField(max_length=32)
+    surname = CharField(max_length=32)
+    status = CharField(max_length=1, choices=STATUS_CHOICES, default='Y')
+    salary = IntegerField()
+    specialty = CharField(max_length=64)
+    grade = CharField(max_length=3, choices=GRADE_CHOICES, default='JUN')
+    education = CharField(max_length=256)
+    experience = TextField()
+    portfolio = CharField(max_length=256)

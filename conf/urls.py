@@ -21,6 +21,7 @@ from django.urls import path
 from accounts.views import MySignupView, MyLoginView
 from conf import settings
 from vacancies.views.my_company import MyCompanyStart, MyCompanyCreate, MyCompanyEdit
+from vacancies.views.my_resume import MyResumeStart, MyResumeCreate, MyResumeEdit
 from vacancies.views.my_vacancies import MyVacanciesList, MyVacancyEdit, MyVacancyCreate
 from vacancies.views.public import (
     HomePageView, ListVacanciesView, VacanciesCatView, CompanyCardView,
@@ -41,6 +42,9 @@ urlpatterns = [
     path('mycompany/vacancies/', MyVacanciesList.as_view(), name='my-vacancies-list'),
     path('mycompany/vacancies/create/', MyVacancyCreate.as_view(), name='my-vacancy-create'),
     path('mycompany/vacancies/<int:id>/', MyVacancyEdit.as_view(), name='my-vacancy-edit'),
+    path('myresume/letsstart/', MyResumeStart.as_view(), name='my-resume-start'),
+    path('myresume/create/', MyResumeCreate.as_view(), name='my-resume-create'),
+    path('myresume/', MyResumeEdit.as_view(), name='my-resume-edit'),
     path('search', SearchView.as_view(), name='search'),
     path('register/', MySignupView.as_view(), name='register'),
     path('login/', MyLoginView.as_view(), name='login'),
